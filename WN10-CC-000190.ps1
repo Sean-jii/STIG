@@ -1,5 +1,4 @@
- 
- <#
+  <#
 .SYNOPSIS
     This PowerShell script ensures that the maximum size of the Windows Application event log is at least 32768 KB (32 MB).
 
@@ -7,8 +6,8 @@
     Author          : Sean Mohr
     LinkedIn        : https://www.linkedin.com/in/sean-mohr-22a08b1b0/
     GitHub          : https://github.com/Sean-jii
-    Date Created    : 2025-12-29
-    Last Modified   : 2025-12-29
+    Date Created    : 2025-12-31
+    Last Modified   : 2025-12-31
     Version         : 1.0
     CVEs            : N/A
     Plugin IDs      : N/A
@@ -30,21 +29,10 @@
 # STIG ID: WN10-CC-000190
 # Disable Autoplay for all drives
 
-$RegPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-$ValueName = "NoViewOnDrive"
-$ValueData = 0xFF  # 255 - Disable Autoplay on all drives
+$Path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 
-# Ensure the registry path exists
-if (-not (Test-Path $RegPath)) {
-    New-Item -Path $RegPath -Force | Out-Null
+If (-not (Test-Path $Path)) {
+    New-Item -Path $Path -Force | Out-Null
 }
 
-# Apply the STIG setting
-New-ItemProperty `
-    -Path $RegPath `
-    -Name $ValueName `
-    -PropertyType DWord `
-    -Value $ValueData `
-    -Force | Out-Null
-
-Write-Output "STIG WN10-CC-000190 remediated: Autoplay disabled for all drives." 
+Set-ItemProperty -Path $Path -Name "NoDriveTypeAutoRun" -Type DWord -Value 255 
