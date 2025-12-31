@@ -1,9 +1,10 @@
- .NOTES
+ 
+.NOTES
     Author          : Sean Mohr
     LinkedIn        : https://www.linkedin.com/in/sean-mohr-22a08b1b0/
     GitHub          : https://github.com/Sean-jii
-    Date Created    : 2025-12-29
-    Last Modified   : 2025-12-29
+    Date Created    : 2025-12-31
+    Last Modified   : 2025-12-31
     Version         : 1.0
     CVEs            : N/A
     Plugin IDs      : N/A
@@ -24,21 +25,12 @@
 #># STIG ID: WN10-CC-000185
 # Disable Autorun on all drives
 
-$RegPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-$ValueName = "NoViewOnDrive"
-$ValueData = 0xFF  # 255 - Disable autorun on all drives
+$Path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 
-# Create registry path if it does not exist
-if (-not (Test-Path $RegPath)) {
-    New-Item -Path $RegPath -Force | Out-Null
+If (-not (Test-Path $Path)) {
+    New-Item -Path $Path -Force | Out-Null
 }
 
-# Apply the STIG setting
-New-ItemProperty `
-    -Path $RegPath `
-    -Name $ValueName `
-    -PropertyType DWord `
-    -Value $ValueData `
-    -Force | Out-Null
-
-Write-Output "STIG WN10-CC-000185 applied: Autorun disabled on all drives." 
+Set-ItemProperty -Path $Path -Name "NoAutorun" -Type DWord -Value 1
+Set-ItemProperty -Path $Path -Name "NoViewContextMenu" -Type DWord -Value 1
+ 
